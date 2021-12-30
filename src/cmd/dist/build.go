@@ -33,6 +33,7 @@ var (
 	go386            string
 	gomips           string
 	gomips64         string
+	goloong64        string
 	goppc64          string
 	goroot           string
 	goroot_final     string
@@ -67,6 +68,7 @@ var okgoarch = []string{
 	"mipsle",
 	"mips64",
 	"mips64le",
+	"loong64",
 	"ppc64",
 	"ppc64le",
 	"riscv64",
@@ -160,6 +162,12 @@ func xinit() {
 	}
 	gomips64 = b
 
+	b = os.Getenv("GOLOONG64")
+	if b == "" {
+		b = "hardfloat"
+	}
+	goloong64 = b
+
 	b = os.Getenv("GOPPC64")
 	if b == "" {
 		b = "power8"
@@ -227,6 +235,7 @@ func xinit() {
 	os.Setenv("GOOS", goos)
 	os.Setenv("GOMIPS", gomips)
 	os.Setenv("GOMIPS64", gomips64)
+	os.Setenv("GOLOONG64", goloong64)
 	os.Setenv("GOPPC64", goppc64)
 	os.Setenv("GOROOT", goroot)
 	os.Setenv("GOROOT_FINAL", goroot_final)
@@ -831,6 +840,9 @@ func runInstall(pkg string, ch chan struct{}) {
 		// Define GOMIPS64_value from gomips64.
 		asmArgs = append(asmArgs, "-D", "GOMIPS64_"+gomips64)
 	}
+	if goarch == "loong64" {
+		asmArgs = append(asmArgs, "-D", "GOLOONG64_"+goloong64)
+	}
 	goasmh := pathf("%s/go_asm.h", workdir)
 	if IsRuntimePackagePath(pkg) {
 		asmArgs = append(asmArgs, "-compiling-runtime")
@@ -1184,6 +1196,9 @@ func cmdenv() {
 	}
 	if goarch == "mips64" || goarch == "mips64le" {
 		xprintf(format, "GOMIPS64", gomips64)
+	}
+	if goarch == "loong64" {
+		xprintf(format, "GOLOONG64", goloong64)
 	}
 	if goarch == "ppc64" || goarch == "ppc64le" {
 		xprintf(format, "GOPPC64", goppc64)
@@ -1549,6 +1564,7 @@ var cgoEnabled = map[string]bool{
 	"linux/mipsle":    true,
 	"linux/mips64":    true,
 	"linux/mips64le":  true,
+	"linux/loong64":   true,
 	"linux/riscv64":   true,
 	"linux/s390x":     true,
 	"linux/sparc64":   true,

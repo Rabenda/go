@@ -433,6 +433,13 @@ func TestMIPSEndToEnd(t *testing.T) {
 	testEndToEnd(t, "mips64", "mips64")
 }
 
+func TestLOONG64Encoder(t *testing.T) {
+	testEndToEnd(t, "loong64", "loong64enc_1")
+	testEndToEnd(t, "loong64", "loong64enc_2")
+	testEndToEnd(t, "loong64", "loong64enc_3")
+	testEndToEnd(t, "loong64", "loong64")
+}
+
 func TestPPC64EndToEnd(t *testing.T) {
 	testEndToEnd(t, "ppc64", "ppc64")
 }

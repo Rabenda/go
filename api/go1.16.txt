@@ -499,3 +499,108 @@ pkg unicode, var Chorasmian *RangeTable
 pkg unicode, var Dives_Akuru *RangeTable
 pkg unicode, var Khitan_Small_Script *RangeTable
 pkg unicode, var Yezidi *RangeTable
+pkg debug/elf, const R_LARCH_32 = 1
+pkg debug/elf, const R_LARCH_32 R_LARCH
+pkg debug/elf, const R_LARCH_64 = 2
+pkg debug/elf, const R_LARCH_ADD16 = 48
+pkg debug/elf, const R_LARCH_ADD16 R_LARCH
+pkg debug/elf, const R_LARCH_ADD24 = 49
+pkg debug/elf, const R_LARCH_ADD24 R_LARCH
+pkg debug/elf, const R_LARCH_ADD32 = 50
+pkg debug/elf, const R_LARCH_ADD32 R_LARCH
+pkg debug/elf, const R_LARCH_ADD64 = 51
+pkg debug/elf, const R_LARCH_ADD64 R_LARCH
+pkg debug/elf, const R_LARCH_ADD8 = 47
+pkg debug/elf, const R_LARCH_ADD8 R_LARCH
+pkg debug/elf, const R_LARCH_64 R_LARCH
+pkg debug/elf, const R_LARCH_COPY = 4
+pkg debug/elf, const R_LARCH_COPY R_LARCH
+pkg debug/elf, const R_LARCH_IRELATIVE = 12
+pkg debug/elf, const R_LARCH_IRELATIVE R_LARCH
+pkg debug/elf, const R_LARCH_JUMP_SLOT = 5
+pkg debug/elf, const R_LARCH_JUMP_SLOT R_LARCH
+pkg debug/elf, const R_LARCH_MARK_LA = 20
+pkg debug/elf, const R_LARCH_MARK_LA R_LARCH
+pkg debug/elf, const R_LARCH_MARK_PCREL = 21
+pkg debug/elf, const R_LARCH_MARK_PCREL R_LARCH
+pkg debug/elf, const R_LARCH_NONE = 0
+pkg debug/elf, const R_LARCH_NONE R_LARCH
+pkg debug/elf, const R_LARCH_RELATIVE = 3
+pkg debug/elf, const R_LARCH_RELATIVE R_LARCH
+pkg debug/elf, const R_LARCH_SOP_ADD = 35
+pkg debug/elf, const R_LARCH_SOP_ADD R_LARCH
+pkg debug/elf, const R_LARCH_SOP_AND = 36
+pkg debug/elf, const R_LARCH_SOP_AND R_LARCH
+pkg debug/elf, const R_LARCH_SOP_ASSERT = 30
+pkg debug/elf, const R_LARCH_SOP_ASSERT R_LARCH
+pkg debug/elf, const R_LARCH_SOP_IF_ELSE = 37
+pkg debug/elf, const R_LARCH_SOP_IF_ELSE R_LARCH
+pkg debug/elf, const R_LARCH_SOP_NOT = 31
+pkg debug/elf, const R_LARCH_SOP_NOT R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_0_10_10_16_S2 = 45
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_0_10_10_16_S2 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_0_5_10_16_S2 = 44
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_0_5_10_16_S2 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_12 = 40
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_12 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_16 = 41
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_16 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_16_S2 = 42
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_16_S2 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_5 = 38
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_10_5 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_5_20 = 43
+pkg debug/elf, const R_LARCH_SOP_POP_32_S_5_20 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_U = 46
+pkg debug/elf, const R_LARCH_SOP_POP_32_U R_LARCH
+pkg debug/elf, const R_LARCH_SOP_POP_32_U_10_12 = 39
+pkg debug/elf, const R_LARCH_SOP_POP_32_U_10_12 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_ABSOLUTE = 23
+pkg debug/elf, const R_LARCH_SOP_PUSH_ABSOLUTE R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_DUP = 24
+pkg debug/elf, const R_LARCH_SOP_PUSH_DUP R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_GPREL = 25
+pkg debug/elf, const R_LARCH_SOP_PUSH_GPREL R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_PCREL = 22
+pkg debug/elf, const R_LARCH_SOP_PUSH_PCREL R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_PLT_PCREL = 29
+pkg debug/elf, const R_LARCH_SOP_PUSH_PLT_PCREL R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_GD = 28
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_GD R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_GOT = 27
+pkg debug/elf, const R_LARCH_SUB16 = 53
+pkg debug/elf, const R_LARCH_SUB16 R_LARCH
+pkg debug/elf, const R_LARCH_SUB24 = 54
+pkg debug/elf, const R_LARCH_SUB24 R_LARCH
+pkg debug/elf, const R_LARCH_SUB32 = 55
+pkg debug/elf, const R_LARCH_SUB32 R_LARCH
+pkg debug/elf, const R_LARCH_SUB64 = 56
+pkg debug/elf, const R_LARCH_SUB64 R_LARCH
+pkg debug/elf, const R_LARCH_SUB8 = 52
+pkg debug/elf, const R_LARCH_SUB8 R_LARCH
+pkg debug/elf, const R_LARCH_TLS_DTPMOD32 = 6
+pkg debug/elf, const R_LARCH_TLS_DTPMOD32 R_LARCH
+pkg debug/elf, const R_LARCH_TLS_DTPMOD64 = 7
+pkg debug/elf, const R_LARCH_TLS_DTPMOD64 R_LARCH
+pkg debug/elf, const R_LARCH_TLS_DTPREL32 = 8
+pkg debug/elf, const R_LARCH_TLS_DTPREL32 R_LARCH
+pkg debug/elf, const R_LARCH_TLS_DTPREL64 = 9
+pkg debug/elf, const R_LARCH_TLS_DTPREL64 R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_GOT R_LARCH
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_TPREL = 26
+pkg debug/elf, const R_LARCH_SOP_PUSH_TLS_TPREL R_LARCH
+pkg debug/elf, const R_LARCH_SOP_SL = 33
+pkg debug/elf, const R_LARCH_SOP_SL R_LARCH
+pkg debug/elf, const R_LARCH_SOP_SR = 34
+pkg debug/elf, const R_LARCH_SOP_SR R_LARCH
+pkg debug/elf, const R_LARCH_SOP_SUB = 32
+pkg debug/elf, const R_LARCH_SOP_SUB R_LARCH
+pkg debug/elf, const R_LARCH_TLS_TPREL32 = 10
+pkg debug/elf, const R_LARCH_TLS_TPREL32 R_LARCH
+pkg debug/elf, const R_LARCH_TLS_TPREL64 = 11
+pkg debug/elf, const R_LARCH_TLS_TPREL64 R_LARCH
+pkg debug/elf, method (R_LARCH) GoString() string
+pkg debug/elf, method (R_LARCH) String() string
+pkg debug/elf, type R_LARCH int
+pkg debug/elf, const EM_LOONGARCH = 258
+pkg debug/elf, const EM_LOONGARCH Machine

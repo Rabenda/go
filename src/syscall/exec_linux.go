@@ -209,7 +209,7 @@ func forkAndExecInChild1(argv0 *byte, argv, envv []*byte, chroot, dir *byte, att
 
 	var hasRawVforkSyscall bool
 	switch runtime.GOARCH {
-	case "amd64", "arm64", "ppc64", "riscv64", "s390x":
+	case "amd64", "arm64", "ppc64", "riscv64", "s390x", "loong64":
 		hasRawVforkSyscall = true
 	}
 

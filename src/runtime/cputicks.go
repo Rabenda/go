@@ -9,6 +9,7 @@
 // +build !mips
 // +build !mipsle
 // +build !wasm
+// +build !loong64
 
 package runtime
 

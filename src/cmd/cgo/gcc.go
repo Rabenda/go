@@ -1569,6 +1569,8 @@ func (p *Package) gccMachine() []string {
 		return []string{"-mabi=64"}
 	case "mips", "mipsle":
 		return []string{"-mabi=32"}
+	case "loong64":
+		return []string{"-mabi=lp64"}
 	}
 	return nil
 }

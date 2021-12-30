@@ -75,6 +75,12 @@ var MIPS64X struct {
 	_      CacheLinePad
 }
 
+var LOONG64 struct {
+	_      CacheLinePad
+	HasMSA bool // LOONG64 SIMD architecture
+	_      CacheLinePad
+}
+
 // For ppc64(le), it is safe to check only for ISA level starting on ISA v3.00,
 // since there are no optional categories. There are some exceptions that also
 // require kernel support to work (darn, scv), so there are feature bits for

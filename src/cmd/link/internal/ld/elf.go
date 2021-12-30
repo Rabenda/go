@@ -221,9 +221,12 @@ func Elfinit(ctxt *Link) {
 			ehdr.Flags = 2 /* Version 2 ABI */
 		}
 		fallthrough
-	case sys.AMD64, sys.ARM64, sys.MIPS64, sys.RISCV64:
+	case sys.AMD64, sys.ARM64, sys.MIPS644, sys.LOONG64, sys.RISCV64:
 		if ctxt.Arch.Family == sys.MIPS64 {
 			ehdr.Flags = 0x20000004 /* MIPS 3 CPIC */
+		}
+		if ctxt.Arch.Family == sys.LOONG64 {
+			ehdr.flags = 0x3
 		}
 		if ctxt.Arch.Family == sys.RISCV64 {
 			ehdr.Flags = 0x4 /* RISCV Float ABI Double */
@@ -1519,6 +1522,8 @@ func asmbElf(ctxt *Link) {
 		Exitf("unknown architecture in asmbelf: %v", ctxt.Arch.Family)
 	case sys.MIPS, sys.MIPS64:
 		eh.Machine = uint16(elf.EM_MIPS)
+	case sys.LOONG64:
+		eh.Machine = uint16(elf.EM_LOONGARCH)
 	case sys.ARM:
 		eh.Machine = uint16(elf.EM_ARM)
 	case sys.AMD64:

@@ -397,6 +397,17 @@ func isAsyncSafePoint(gp *g, pc, sp, lr uintptr) (bool, uintptr) {
 		// use the LR for unwinding, which will be bad.
 		return false, 0
 	}
+	if (GOARCH == "loong64") && lr == pc+8 && funcspdelta(f, pc, nil) == 0 {
+		// We probably stopped at a half-executed CALL instruction,
+		// where the LR is updated but the PC has not. If we preempt
+		// here we'll see a seemingly self-recursive call, which is in
+		// fact not.
+		// This is normally ok, as we use the return address saved on
+		// stack for unwinding, not the LR value. But if this is a
+		// call to morestack, we haven't created the frame, and we'll
+		// use the LR for unwinding, which will be bad.
+		return false, 0
+	}
 	up, startpc := pcdatavalue2(f, _PCDATA_UnsafePoint, pc)
 	if up != _PCDATA_UnsafePointSafe {
 		// Unsafe-point marked by compiler. This includes

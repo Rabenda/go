@@ -38,6 +38,7 @@ func main() {
 	gen("arm64", notags, zeroARM64, copyARM64)
 	gen("ppc64x", tagsPPC64x, zeroPPC64x, copyPPC64x)
 	gen("mips64x", tagsMIPS64x, zeroMIPS64x, copyMIPS64x)
+	gen("loong64", tagsLOONG64, zeroLOONG64, copyLOONG64)
 	gen("riscv64", notags, zeroRISCV64, copyRISCV64)
 }
 
@@ -251,6 +252,36 @@ func copyRISCV64(w io.Writer) {
 		fmt.Fprintln(w, "\tADD\t$8, X10")
 		fmt.Fprintln(w, "\tMOV\tX31, (X11)")
 		fmt.Fprintln(w, "\tADD\t$8, X11")
+		fmt.Fprintln(w)
+	}
+	fmt.Fprintln(w, "\tRET")
+}
+
+func tagsLOONG64(w io.Writer) {
+	fmt.Fprintln(w)
+	fmt.Fprintln(w, "// +build loong64")
+	fmt.Fprintln(w)
+}
+
+func zeroLOONG64(w io.Writer) {
+	// R0: always zero
+	// R19 (aka REGRT1): ptr to memory to be zeroed - 8
+	// On return, R19 points to the last zeroed dword.
+	fmt.Fprintln(w, "TEXT runtime·duffzero(SB), NOSPLIT|NOFRAME, $0-0")
+	for i := 0; i < 128; i++ {
+		fmt.Fprintln(w, "\tMOVV\tR0, 8(R19)")
+		fmt.Fprintln(w, "\tADDV\t$8, R19")
+	}
+	fmt.Fprintln(w, "\tRET")
+}
+
+func copyLOONG64(w io.Writer) {
+	fmt.Fprintln(w, "TEXT runtime·duffcopy(SB), NOSPLIT|NOFRAME, $0-0")
+	for i := 0; i < 128; i++ {
+		fmt.Fprintln(w, "\tMOVV\t(R19), R30")
+		fmt.Fprintln(w, "\tADDV\t$8, R19")
+		fmt.Fprintln(w, "\tMOVV\tR30, (R4)")
+		fmt.Fprintln(w, "\tADDV\t$8, R4")
 		fmt.Fprintln(w)
 	}
 	fmt.Fprintln(w, "\tRET")

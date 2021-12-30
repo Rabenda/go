@@ -334,10 +334,11 @@ func hasSlowFloatingPoint() bool {
 	switch runtime.GOARCH {
 	case "arm":
 		return os.Getenv("GOARM") == "5"
-	case "mips", "mipsle", "mips64", "mips64le":
+	case "mips", "mipsle", "mips64", "mips64le", "loong64":
 		// Be conservative and assume that all mips boards
 		// have emulated floating point.
 		// TODO: detect what it actually has.
+		// TODO: detect whether loong64 has slow floating point 
 		return true
 	}
 	return false

@@ -28,6 +28,7 @@ var (
 	GOARM    = goarm()
 	GOMIPS   = gomips()
 	GOMIPS64 = gomips64()
+	GOLOONG64 = goloong64()
 	GOPPC64  = goppc64()
 	GOWASM   = gowasm()
 	GO_LDSO  = defaultGO_LDSO
@@ -73,6 +74,15 @@ func gomips64() string {
 		return v
 	}
 	log.Fatalf("Invalid GOMIPS64 value. Must be hardfloat or softfloat.")
+	panic("unreachable")
+}
+
+func goloong64() string {
+	switch v := envOr("GOLOONG64", defaultGOLOONG64); v {
+	case "hardfloat", "softfloat":
+		return v
+	}
+	log.Fatalf("Invalid GOLOONG64 value. Must be hardfloat or softfloat.")
 	panic("unreachable")
 }
 

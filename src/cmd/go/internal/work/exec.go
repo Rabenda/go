@@ -2601,6 +2601,8 @@ func (b *Builder) gccArchArgs() []string {
 		return []string{"-mabi=64"}
 	case "mips", "mipsle":
 		return []string{"-mabi=32", "-march=mips32"}
+	case "loong64":
+		return []string{"-mabi=lp64"}
 	case "ppc64":
 		if cfg.Goos == "aix" {
 			return []string{"-maix64"}
@@ -2622,6 +2624,10 @@ func envList(key, def string) []string {
 // CFlags returns the flags to use when invoking the C, C++ or Fortran compilers, or cgo.
 func (b *Builder) CFlags(p *load.Package) (cppflags, cflags, cxxflags, fflags, ldflags []string, err error) {
 	defaults := "-g -O2"
+
+	if cfg.Goarch == "loong64" {
+		defaults = "-O2"
+	}
 
 	if cppflags, err = buildFlags("CPPFLAGS", "", p.CgoCPPFLAGS, checkCompilerFlags); err != nil {
 		return

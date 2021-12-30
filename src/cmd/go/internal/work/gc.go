@@ -360,6 +360,11 @@ func asmArgs(a *Action, p *load.Package) []interface{} {
 		args = append(args, "-D", "GOMIPS64_"+cfg.GOMIPS64)
 	}
 
+	if cfg.Goarch == "loong64" {
+		// Define GOLOONG64_value from cfg.GOLOONG64.
+		args = append(args, "-D", "GOLOONG64_"+cfg.GOLOONG64)
+	}
+
 	return args
 }
 

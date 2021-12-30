@@ -8,6 +8,7 @@
 // +build !mips64le
 // +build !s390x
 // +build !ppc64
+// +build !loong64
 // +build linux
 
 package runtime

@@ -47,6 +47,7 @@ const (
 	// R_ADDRMIPS (only used on mips/mips64) resolves to the low 16 bits of an external
 	// address, by encoding it into the instruction.
 	R_ADDRMIPS
+	R_ADDRLOONG64
 	// R_ADDROFF resolves to a 32-bit offset from the beginning of the section
 	// holding the data being relocated to the referenced symbol.
 	R_ADDROFF
@@ -64,6 +65,7 @@ const (
 	// R_CALLMIPS (only used on mips64) resolves to non-PC-relative target address
 	// of a CALL (JAL) instruction, by encoding the address into the instruction.
 	R_CALLMIPS
+	R_CALLLOONG64
 	// R_CALLRISCV marks RISC-V CALLs for stack checking.
 	R_CALLRISCV
 	R_CONST
@@ -112,6 +114,7 @@ const (
 	// of a JMP instruction, by encoding the address into the instruction.
 	// The stack nosplit check ignores this since it is not a function call.
 	R_JMPMIPS
+	R_JMPLOONG64
 
 	// R_DWARFSECREF resolves to the offset of the symbol from its section.
 	// Target of relocation must be size 4 (in current implementation).
@@ -241,9 +244,12 @@ const (
 	// R_ADDRMIPSU (only used on mips/mips64) resolves to the sign-adjusted "upper" 16
 	// bits (bit 16-31) of an external address, by encoding it into the instruction.
 	R_ADDRMIPSU
+	R_ADDRLOONG64U
 	// R_ADDRMIPSTLS (only used on mips64) resolves to the low 16 bits of a TLS
 	// address (offset from thread pointer), by encoding it into the instruction.
 	R_ADDRMIPSTLS
+	R_ADDRLOONG64TLS
+	R_ADDRLOONG64TLSU
 
 	// R_ADDRCUOFF resolves to a pointer-sized offset from the start of the
 	// symbol's DWARF compile unit.
@@ -265,7 +271,7 @@ const (
 // the target address in register or memory.
 func (r RelocType) IsDirectCall() bool {
 	switch r {
-	case R_CALL, R_CALLARM, R_CALLARM64, R_CALLMIPS, R_CALLPOWER, R_CALLRISCV:
+	case R_CALL, R_CALLARM, R_CALLARM64, R_CALLMIPS, R_CALLLOONG64, R_CALLPOWER, R_CALLRISCV:
 		return true
 	}
 	return false
@@ -279,6 +285,8 @@ func (r RelocType) IsDirectCall() bool {
 func (r RelocType) IsDirectJump() bool {
 	switch r {
 	case R_JMPMIPS:
+		return true
+	case R_JMPLOONG64:
 		return true
 	}
 	return false

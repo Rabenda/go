@@ -258,6 +258,7 @@ var (
 	GO386    = envOr("GO386", objabi.GO386)
 	GOMIPS   = envOr("GOMIPS", objabi.GOMIPS)
 	GOMIPS64 = envOr("GOMIPS64", objabi.GOMIPS64)
+	GOLOONG64 = envOr("GOLOONG64", objabi.GOLOONG64)
 	GOPPC64  = envOr("GOPPC64", fmt.Sprintf("%s%d", "power", objabi.GOPPC64))
 	GOWASM   = envOr("GOWASM", fmt.Sprint(objabi.GOWASM))
 
@@ -286,6 +287,8 @@ func GetArchEnv() (key, val string) {
 		return "GOMIPS", GOMIPS
 	case "mips64", "mips64le":
 		return "GOMIPS64", GOMIPS64
+	case "loong64":
+		return "GOLOONG64", GOLOONG64
 	case "ppc64", "ppc64le":
 		return "GOPPC64", GOPPC64
 	case "wasm":

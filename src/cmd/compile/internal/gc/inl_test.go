@@ -157,7 +157,7 @@ func TestIntendedInlining(t *testing.T) {
 		},
 	}
 
-	if runtime.GOARCH != "386" && runtime.GOARCH != "mips64" && runtime.GOARCH != "mips64le" && runtime.GOARCH != "riscv64" {
+	if runtime.GOARCH != "386" && runtime.GOARCH != "mips64" && runtime.GOARCH != "mips64le" && runtime.GOARCH != "loong64" && runtime.GOARCH != "riscv64" {
 		// nextFreeFast calls sys.Ctz64, which on 386 is implemented in asm and is not inlinable.
 		// We currently don't have midstack inlining so nextFreeFast is also not inlinable on 386.
 		// On mips64x and riscv64, Ctz64 is not intrinsified and causes nextFreeFast too expensive

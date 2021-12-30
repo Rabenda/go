@@ -21,6 +21,7 @@ const GoarchMips64 = 0
 const GoarchMips64le = 0
 const GoarchMips64p32 = 0
 const GoarchMips64p32le = 1
+const GoarchLoong64 = 0
 const GoarchPpc = 0
 const GoarchRiscv = 0
 const GoarchRiscv64 = 0

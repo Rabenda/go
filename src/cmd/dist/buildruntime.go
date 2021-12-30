@@ -45,6 +45,7 @@ func mkzversion(dir, file string) {
 //	const defaultGOARM = <goarm>
 //	const defaultGOMIPS = <gomips>
 //	const defaultGOMIPS64 = <gomips64>
+//	const defaultGOLOONG64 = <goloong64>
 //	const defaultGOPPC64 = <goppc64>
 //	const defaultGOOS = runtime.GOOS
 //	const defaultGOARCH = runtime.GOARCH
@@ -74,6 +75,7 @@ func mkzbootstrap(file string) {
 	fmt.Fprintf(&buf, "const defaultGOARM = `%s`\n", goarm)
 	fmt.Fprintf(&buf, "const defaultGOMIPS = `%s`\n", gomips)
 	fmt.Fprintf(&buf, "const defaultGOMIPS64 = `%s`\n", gomips64)
+	fmt.Fprintf(&buf, "const defaultGOLOONG64 = `%s`\n", goloong64)
 	fmt.Fprintf(&buf, "const defaultGOPPC64 = `%s`\n", goppc64)
 	fmt.Fprintf(&buf, "const defaultGOOS = runtime.GOOS\n")
 	fmt.Fprintf(&buf, "const defaultGOARCH = runtime.GOARCH\n")

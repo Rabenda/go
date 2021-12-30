@@ -766,6 +766,7 @@ func (ctxt *Link) windynrelocsyms() {
 	}
 
 	rel := ctxt.loader.CreateSymForUpdate(".rel", 0)
+	ctxt.Logf("{rel}")
 	rel.SetType(sym.STEXT)
 
 	for _, s := range ctxt.Textp {

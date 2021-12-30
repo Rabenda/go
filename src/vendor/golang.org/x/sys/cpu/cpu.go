@@ -148,6 +148,12 @@ var MIPS64X struct {
 	_      CacheLinePad
 }
 
+var LOONG64 struct {
+	_      CacheLinePad
+	HasMSA bool // borrowed form MIPS
+	_      CacheLinePad
+}
+
 // PPC64 contains the supported CPU features of the current ppc64/ppc64le platforms.
 // If the current platform is not ppc64/ppc64le then all feature flags are false.
 //

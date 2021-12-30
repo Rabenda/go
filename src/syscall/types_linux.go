@@ -93,6 +93,8 @@ typedef struct user_pt_regs PtraceRegs;
 typedef struct pt_regs PtraceRegs;
 #elif defined(__mips__)
 typedef struct user PtraceRegs;
+#elif defined(__loongarch__)
+typedef struct pt_regs PtraceRegs;
 #elif defined(__s390x__)
 typedef struct _user_regs_struct PtraceRegs;
 #else
@@ -112,7 +114,7 @@ typedef struct {} ptracePer;
 // The real epoll_event is a union, and godefs doesn't handle it well.
 struct my_epoll_event {
 	uint32_t events;
-#if defined(__ARM_EABI__) || defined(__aarch64__) || (defined(__mips__) && _MIPS_SIM == _ABIO32)
+#if defined(__ARM_EABI__) || defined(__aarch64__) || (defined(__mips__) && _MIPS_SIM == _ABIO32) || defined(__loongarch__)
 	// padding is not specified in linux/eventpoll.h but added to conform to the
 	// alignment requirements of EABI
 	int32_t padFd;

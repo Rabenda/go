@@ -85,6 +85,7 @@ var (
 	asmArchMipsLE   = asmArch{name: "mipsle", bigEndian: false, stack: "R29", lr: true}
 	asmArchMips64   = asmArch{name: "mips64", bigEndian: true, stack: "R29", lr: true}
 	asmArchMips64LE = asmArch{name: "mips64le", bigEndian: false, stack: "R29", lr: true}
+	asmArchLoong64  = asmArch{name: "loong64", bigEndian: false, stack: "R3", lr: true}
 	asmArchPpc64    = asmArch{name: "ppc64", bigEndian: true, stack: "R1", lr: true}
 	asmArchPpc64LE  = asmArch{name: "ppc64le", bigEndian: false, stack: "R1", lr: true}
 	asmArchRISCV64  = asmArch{name: "riscv64", bigEndian: false, stack: "SP", lr: true}
@@ -100,6 +101,7 @@ var (
 		&asmArchMipsLE,
 		&asmArchMips64,
 		&asmArchMips64LE,
+		&asmArchLoong64,
 		&asmArchPpc64,
 		&asmArchPpc64LE,
 		&asmArchRISCV64,
@@ -710,7 +712,7 @@ func asmCheckVar(badf func(string, ...interface{}), fn *asmFunc, line, expr stri
 					src = 8
 				}
 			}
-		case "mips", "mipsle", "mips64", "mips64le":
+		case "mips", "mipsle", "mips64", "mips64le", "loong64":
 			switch op {
 			case "MOVB", "MOVBU":
 				src = 1

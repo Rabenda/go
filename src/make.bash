@@ -76,6 +76,7 @@ if [ ! -f run.bash ]; then
 fi
 
 if [ "$GOBUILDTIMELOGFILE" != "" ]; then
+	echo $GOBUILDT IMELOGFILE
 	echo $(LC_TIME=C date) start make.bash >"$GOBUILDTIMELOGFILE"
 fi
 
