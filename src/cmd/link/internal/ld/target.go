@@ -113,7 +113,7 @@ func (t *Target) IsMIPS64() bool {
 }
 
 func (t *Target) IsLOONG64() bool {
-	return t.Arch.Family == sys.LOONG64
+	return t.Arch.Family == sys.Loong64
 }
 
 func (t *Target) IsPPC64() bool {

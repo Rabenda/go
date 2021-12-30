@@ -96,7 +96,7 @@ func elfreloc1(ctxt *ld.Link, out *ld.OutBuf, ldr *loader.Loader, s loader.Sym, 
 		}
 		out.Write64(uint64(r.Xadd))
 
-	case objabi.R_CALLRISCV:
+	case objabi.R_RISCV_CALL:
 		// Call relocations are currently handled via R_RISCV_PCREL_ITYPE.
 		// TODO(jsing): Consider generating elf.R_RISCV_CALL instead of a
 		// HI20/LO12_I pair.
@@ -158,7 +158,7 @@ func machoreloc1(*sys.Arch, *ld.OutBuf, *loader.Loader, loader.Sym, loader.ExtRe
 func archreloc(target *ld.Target, ldr *loader.Loader, syms *ld.ArchSyms, r loader.Reloc, s loader.Sym, val int64) (o int64, nExtReloc int, ok bool) {
 	if target.IsExternal() {
 		switch r.Type() {
-		case objabi.R_CALLRISCV:
+		case objabi.R_RISCV_CALL:
 			return val, 0, true
 
 		case objabi.R_RISCV_PCREL_ITYPE, objabi.R_RISCV_PCREL_STYPE, objabi.R_RISCV_TLS_IE_ITYPE, objabi.R_RISCV_TLS_IE_STYPE:
@@ -171,7 +171,7 @@ func archreloc(target *ld.Target, ldr *loader.Loader, syms *ld.ArchSyms, r loade
 	rs := ldr.ResolveABIAlias(r.Sym())
 
 	switch r.Type() {
-	case objabi.R_CALLRISCV:
+	case objabi.R_RISCV_CALL:
 		// Nothing to do.
 		return val, 0, true
 

@@ -39,6 +39,7 @@ func main() {
 	ctxt.Flag_dynlink = *flags.Dynlink
 	ctxt.Flag_linkshared = *flags.Linkshared
 	ctxt.Flag_shared = *flags.Shared || *flags.Dynlink
+	ctxt.Flag_maymorestack = "" // "call named function before all stack growth checks loongarch64"
 	ctxt.IsAsm = true
 	ctxt.Pkgpath = *flags.Importpath
 	switch *flags.Spectre {

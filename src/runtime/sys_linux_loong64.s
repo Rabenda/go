@@ -38,7 +38,6 @@
 #define SYS_futex		98
 #define SYS_sched_getaffinity	123
 #define SYS_exit_group		94
-// #define SYS_epoll_create	5207  // loong64 only has SYS_EPOLL_CREATE1
 #define SYS_epoll_ctl		21
 #define SYS_tgkill		131
 #define SYS_openat		56
@@ -47,6 +46,9 @@
 #define SYS_epoll_create1	20
 #define SYS_brk			214
 #define SYS_pipe2		59
+#define SYS_timer_create	107
+#define SYS_timer_settime	110
+#define SYS_timer_delete	111
 
 TEXT runtime·exit(SB),NOSPLIT|NOFRAME,$0-4
 	MOVW	code+0(FP), R4
@@ -59,23 +61,22 @@ TEXT runtime·exitThread(SB),NOSPLIT|NOFRAME,$0-8
 	MOVV	wait+0(FP), R19
 	// We're done using the stack.
 	MOVW	$0, R11
-	SYNC
+	DBAR
 	MOVW	R11, (R19)
-	SYNC
+	DBAR
 	MOVW	$0, R4	// exit code
 	MOVV	$SYS_exit, R11
 	SYSCALL
 	JMP	0(PC)
 
 TEXT runtime·open(SB),NOSPLIT|NOFRAME,$0-20
-	// This uses openat instead of open, because Android O blocks open.
 	MOVW	$AT_FDCWD, R4 // AT_FDCWD, so this acts like open
 	MOVV	name+0(FP), R5
 	MOVW	mode+8(FP), R6
 	MOVW	perm+12(FP), R7
 	MOVV	$SYS_openat, R11
 	SYSCALL
-	MOVW    $-4096, R5
+	MOVW	$-4096, R5
 	BGEU	R5, R4, 2(PC)
 	MOVW	$-1, R4
 	MOVW	R4, ret+16(FP)
@@ -85,7 +86,7 @@ TEXT runtime·closefd(SB),NOSPLIT|NOFRAME,$0-12
 	MOVW	fd+0(FP), R4
 	MOVV	$SYS_close, R11
 	SYSCALL
-	MOVW    $-4096, R5
+	MOVW	$-4096, R5
 	BGEU	R5, R4, 2(PC)
 	MOVW	$-1, R4
 	MOVW	R4, ret+8(FP)
@@ -97,8 +98,6 @@ TEXT runtime·write1(SB),NOSPLIT|NOFRAME,$0-28
 	MOVW	n+16(FP), R6
 	MOVV	$SYS_write, R11
 	SYSCALL
-        //BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
@@ -108,8 +107,6 @@ TEXT runtime·read(SB),NOSPLIT|NOFRAME,$0-28
 	MOVW	n+16(FP), R6
 	MOVV	$SYS_read, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
@@ -119,8 +116,6 @@ TEXT runtime·pipe(SB),NOSPLIT|NOFRAME,$0-12
 	MOVV	R0, R5
 	MOVV	$SYS_pipe2, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, errno+8(FP)
 	RET
 
@@ -130,8 +125,6 @@ TEXT runtime·pipe2(SB),NOSPLIT|NOFRAME,$0-20
 	MOVW	flags+0(FP), R5
 	MOVV	$SYS_pipe2, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, errno+16(FP)
 	RET
 
@@ -175,7 +168,7 @@ TEXT runtime·raise(SB),NOSPLIT|NOFRAME,$0
 TEXT runtime·raiseproc(SB),NOSPLIT|NOFRAME,$0
 	MOVV	$SYS_getpid, R11
 	SYSCALL
-	//MOVW	R4, R4	// arg 1 pid      //FIXME
+	//MOVW	R4, R4	// arg 1 pid
 	MOVW	sig+0(FP), R5	// arg 2
 	MOVV	$SYS_kill, R11
 	SYSCALL
@@ -203,13 +196,38 @@ TEXT runtime·setitimer(SB),NOSPLIT|NOFRAME,$0-24
 	SYSCALL
 	RET
 
+TEXT runtime·timer_create(SB),NOSPLIT,$0-28
+	MOVW	clockid+0(FP), R4
+	MOVV	sevp+8(FP), R5
+	MOVV	timerid+16(FP), R6
+	MOVV	$SYS_timer_create, R11
+	SYSCALL
+	MOVW	R4, ret+24(FP)
+	RET
+
+TEXT runtime·timer_settime(SB),NOSPLIT,$0-28
+	MOVW	timerid+0(FP), R4
+	MOVW	flags+4(FP), R5
+	MOVV	new+8(FP), R6
+	MOVV	old+16(FP), R7
+	MOVV	$SYS_timer_settime, R11
+	SYSCALL
+	MOVW	R4, ret+24(FP)
+	RET
+
+TEXT runtime·timer_delete(SB),NOSPLIT,$0-12
+	MOVW	timerid+0(FP), R4
+	MOVV	$SYS_timer_delete, R11
+	SYSCALL
+	MOVW	R4, ret+8(FP)
+	RET
+
 TEXT runtime·mincore(SB),NOSPLIT|NOFRAME,$0-28
 	MOVV	addr+0(FP), R4
 	MOVV	n+8(FP), R5
 	MOVV	dst+16(FP), R6
 	MOVV	$SYS_mincore, R11
 	SYSCALL
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
@@ -228,8 +246,9 @@ TEXT runtime·walltime1(SB),NOSPLIT,$16-12
 	MOVV	R11, 8(R3)
 	MOVV	R7, 16(R3)
 
+	MOVV    $ret-8(FP), R11 // caller's SP
 	MOVV	R1, m_vdsoPC(R24)
-	MOVV	R3, m_vdsoSP(R24)
+	MOVV	R11, m_vdsoSP(R24)
 
 	MOVV	m_curg(R24), R4
 	MOVV	g, R5
@@ -240,7 +259,7 @@ TEXT runtime·walltime1(SB),NOSPLIT,$16-12
 
 noswitch:
 	SUBV	$16, R25
-	AND	$~15, R25	// Align for C code     // FIXME
+	AND	$~15, R25	// Align for C code
 	MOVV	R25, R3
 
 	MOVW	$0, R4 // CLOCK_REALTIME=0
@@ -289,8 +308,9 @@ TEXT runtime·nanotime1(SB),NOSPLIT,$16-8
 	MOVV	R11, 8(R3)
 	MOVV	R7, 16(R3)
 
+	MOVV    $ret-8(FP), R11 // caller's SP
 	MOVV	R1, m_vdsoPC(R24)
-	MOVV	R3, m_vdsoSP(R24)
+	MOVV	R11, m_vdsoSP(R24)
 
 	MOVV	m_curg(R24), R4
 	MOVV	g, R5
@@ -301,7 +321,7 @@ TEXT runtime·nanotime1(SB),NOSPLIT,$16-8
 
 noswitch:
 	SUBV	$16, R25
-	AND	$~15, R25	// Align for C code     // FIXME
+	AND	$~15, R25	// Align for C code
 	MOVV	R25, R3
 
 	MOVW	$1, R4 // CLOCK_MONOTONIC=1
@@ -347,7 +367,7 @@ TEXT runtime·rtsigprocmask(SB),NOSPLIT|NOFRAME,$0-28
 	MOVW	size+24(FP), R7
 	MOVV	$SYS_rt_sigprocmask, R11
 	SYSCALL
-	MOVW    $-4096, R5
+	MOVW	$-4096, R5
 	BGEU	R5, R4, 2(PC)
 	MOVV	R0, 0xf1(R0)	// crash
 	RET
@@ -359,8 +379,6 @@ TEXT runtime·rt_sigaction(SB),NOSPLIT|NOFRAME,$0-36
 	MOVV	size+24(FP), R7
 	MOVV	$SYS_rt_sigaction, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+32(FP)
 	RET
 
@@ -373,11 +391,6 @@ TEXT runtime·sigfwd(SB),NOSPLIT,$0-32
 	RET
 
 TEXT runtime·sigtramp(SB),NOSPLIT,$64
-	// initialize REGSB = PC&0xffffffff00000000
-	//BL     1(PC)
-	//SRLV	$32, R1, RSB
-	//SLLV	$32, RSB
-
 	// this might be called in external code context,
 	// where g is not set.
 	MOVB	runtime·iscgo(SB), R19
@@ -404,12 +417,12 @@ TEXT runtime·mmap(SB),NOSPLIT|NOFRAME,$0
 
 	MOVV	$SYS_mmap, R11
 	SYSCALL
-	MOVW    $-4096, R5
-        BGEU    R5, R4, ok
-        MOVV    $0, p+32(FP)
-        SUBVU   R4, R0, R4
-        MOVV    R4, err+40(FP)
-        RET
+	MOVW	$-4096, R5
+	BGEU	R5, R4, ok
+	MOVV	$0, p+32(FP)
+	SUBVU	R4, R0, R4
+	MOVV	R4, err+40(FP)
+	RET
 ok:
 	MOVV	R4, p+32(FP)
 	MOVV	$0, err+40(FP)
@@ -420,8 +433,8 @@ TEXT runtime·munmap(SB),NOSPLIT|NOFRAME,$0
 	MOVV	n+8(FP), R5
 	MOVV	$SYS_munmap, R11
 	SYSCALL
-	MOVW    $-4096, R5
-        BGEU	R5, R4, 2(PC)
+	MOVW	$-4096, R5
+	BGEU	R5, R4, 2(PC)
 	MOVV	R0, 0xf3(R0)	// crash
 	RET
 
@@ -445,8 +458,6 @@ TEXT runtime·futex(SB),NOSPLIT|NOFRAME,$0
 	MOVW	val3+32(FP), R9
 	MOVV	$SYS_futex, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+40(FP)
 	RET
 
@@ -516,9 +527,9 @@ TEXT runtime·sigaltstack(SB),NOSPLIT|NOFRAME,$0
 	MOVV	old+8(FP), R5
 	MOVV	$SYS_sigaltstack, R11
 	SYSCALL
-	MOVW    $-4096, R5
+	MOVW	$-4096, R5
 	BGEU	R5, R4, 2(PC)
-	MOVV	R0, 0xf1(R0)	// crash  // FIXME
+	MOVV	R0, 0xf1(R0)	// crash
 	RET
 
 TEXT runtime·osyield(SB),NOSPLIT|NOFRAME,$0
@@ -532,18 +543,14 @@ TEXT runtime·sched_getaffinity(SB),NOSPLIT|NOFRAME,$0
 	MOVV	buf+16(FP), R6
 	MOVV	$SYS_sched_getaffinity, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
 // int32 runtime·epollcreate(int32 size);
 TEXT runtime·epollcreate(SB),NOSPLIT|NOFRAME,$0
-	MOVW    size+0(FP), R4
+	MOVW	size+0(FP), R4
 	MOVV	$SYS_epoll_create1, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+8(FP)
 	RET
 
@@ -552,8 +559,6 @@ TEXT runtime·epollcreate1(SB),NOSPLIT|NOFRAME,$0
 	MOVW	flags+0(FP), R4
 	MOVV	$SYS_epoll_create1, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+8(FP)
 	RET
 
@@ -565,13 +570,11 @@ TEXT runtime·epollctl(SB),NOSPLIT|NOFRAME,$0
 	MOVV	ev+16(FP), R7
 	MOVV	$SYS_epoll_ctl, R11
 	SYSCALL
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
 // int32 runtime·epollwait(int32 epfd, EpollEvent *ev, int32 nev, int32 timeout);
 TEXT runtime·epollwait(SB),NOSPLIT|NOFRAME,$0
-	// This uses pwait instead of wait, because Android O blocks wait.
 	MOVW	epfd+0(FP), R4
 	MOVV	ev+8(FP), R5
 	MOVW	nev+16(FP), R6
@@ -579,16 +582,14 @@ TEXT runtime·epollwait(SB),NOSPLIT|NOFRAME,$0
 	MOVV	$0, R8
 	MOVV	$SYS_epoll_pwait, R11
 	SYSCALL
-	//BGE	R4, R0, 2(PC)
-	//SUBVU	R4, R0, R4	// caller expects negative errno
 	MOVW	R4, ret+24(FP)
 	RET
 
 // void runtime·closeonexec(int32 fd);
 TEXT runtime·closeonexec(SB),NOSPLIT|NOFRAME,$0
-	MOVW    fd+0(FP), R4  // fd
-	MOVV    $2, R5  // F_SETFD
-	MOVV    $1, R6  // FD_CLOEXEC
+	MOVW	fd+0(FP), R4  // fd
+	MOVV	$2, R5	// F_SETFD
+	MOVV	$1, R6	// FD_CLOEXEC
 	MOVV	$SYS_fcntl, R11
 	SYSCALL
 	RET
@@ -601,7 +602,7 @@ TEXT runtime·setNonblock(SB),NOSPLIT|NOFRAME,$0-4
 	MOVV	$SYS_fcntl, R11
 	SYSCALL
 	MOVW	$0x800, R6 // O_NONBLOCK
-	OR	R4, R6                 //FIXME 
+	OR	R4, R6
 	MOVW	fd+0(FP), R4 // fd
 	MOVV	$4, R5	// F_SETFL
 	MOVV	$SYS_fcntl, R11

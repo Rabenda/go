@@ -630,6 +630,25 @@ func (f *File) applyRelocations(dst []byte, rels []byte) error {
 	}
 }
 
+// relocSymbolTargetOK decides whether we should try to apply a
+// relocation to a DWARF data section, given a pointer to the symbol
+// targeted by the relocation. Most relocations in DWARF data tend to
+// be section-relative, but some target non-section symbols (for
+// example, low_PC attrs on subprogram or compilation unit DIEs that
+// target function symbols), and we need to include these as well.
+// Return value is a pair (X,Y) where X is a boolean indicating
+// whether the relocation is needed, and Y is the symbol value in the
+// case of a non-section relocation that needs to be applied.
+func relocSymbolTargetOK(sym *Symbol) (bool, uint64) {
+	if ST_TYPE(sym.Info) == STT_SECTION {
+		return true, 0
+	}
+	if sym.Section != SHN_UNDEF && sym.Section < SHN_LORESERVE {
+		return true, sym.Value
+	}
+	return false, 0
+}
+
 // canApplyRelocation reports whether we should try to apply a
 // relocation to a DWARF data section, given a pointer to the symbol
 // targeted by the relocation.

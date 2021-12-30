@@ -1966,7 +1966,7 @@ func assemble(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				rel.Siz = 4
 				rel.Sym = p.To.Sym
 				rel.Add = p.To.Offset
-				rel.Type = objabi.R_CALLRISCV
+				rel.Type = objabi.R_RISCV_CALL
 			}
 		case AAUIPC:
 			var rt objabi.RelocType

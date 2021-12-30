@@ -1770,7 +1770,7 @@ func hostlinkArchArgs(arch *sys.Arch) []string {
 		return []string{"-mabi=64"}
 	case sys.MIPS:
 		return []string{"-mabi=32"}
-	case sys.LOONG64:
+	case sys.Loong64:
 		return []string{"-mabi=lp64"}
 	case sys.PPC64:
 		if objabi.GOOS == "aix" {

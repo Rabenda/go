@@ -18,8 +18,8 @@ const (
 	I386
 	MIPS
 	MIPS64
-	LOONG64
-	LOONG32
+	Loong64
+	Loong32
 	PPC64
 	RISCV64
 	S390X
@@ -91,6 +91,15 @@ var ArchARM64 = &Arch{
 	MinLC:     4,
 }
 
+var ArchLoong64 = &Arch{
+	Name:          "loong64",
+	Family:        Loong64,
+	ByteOrder:     binary.LittleEndian,
+	PtrSize:       8,
+	RegSize:       8,
+	MinLC:         4,
+}
+
 var ArchMIPS = &Arch{
 	Name:      "mips",
 	Family:    MIPS,
@@ -121,15 +130,6 @@ var ArchMIPS64 = &Arch{
 var ArchMIPS64LE = &Arch{
 	Name:      "mips64le",
 	Family:    MIPS64,
-	ByteOrder: binary.LittleEndian,
-	PtrSize:   8,
-	RegSize:   8,
-	MinLC:     4,
-}
-
-var ArchLOONG64 = &Arch{
-	Name:      "loong64",
-	Family:    LOONG64,
 	ByteOrder: binary.LittleEndian,
 	PtrSize:   8,
 	RegSize:   8,
@@ -190,7 +190,7 @@ var Archs = [...]*Arch{
 	ArchMIPSLE,
 	ArchMIPS64,
 	ArchMIPS64LE,
-	ArchLOONG64,
+	ArchLoong64,
 	ArchPPC64,
 	ArchPPC64LE,
 	ArchRISCV64,

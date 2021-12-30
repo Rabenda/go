@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build loong64
 // +build loong64
 
 package atomic
@@ -42,10 +43,19 @@ func Loadp(ptr unsafe.Pointer) unsafe.Pointer
 func LoadAcq(ptr *uint32) uint32
 
 //go:noescape
+func LoadAcquintptr(ptr *uintptr) uintptr
+
+//go:noescape
 func And8(ptr *uint8, val uint8)
 
 //go:noescape
+func And(ptr *uint32, val uint32)
+
+//go:noescape
 func Or8(ptr *uint8, val uint8)
+
+//go:noescape
+func Or(ptr *uint32, val uint32)
 
 // NOTE: Do not add atomicxor8 (XOR is not idempotent).
 
@@ -69,3 +79,6 @@ func StorepNoWB(ptr unsafe.Pointer, val unsafe.Pointer)
 
 //go:noescape
 func StoreRel(ptr *uint32, val uint32)
+
+//go:noescape
+func StoreReluintptr(ptr *uintptr, val uintptr)

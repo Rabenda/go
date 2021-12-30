@@ -347,7 +347,7 @@ func Load(l *loader.Loader, arch *sys.Arch, localSymVersion int, f *bio.Reader, 
 			return errorf("elf object but not mips64")
 		}
 
-	case sys.LOONG64:
+	case sys.Loong64:
 		if mach != elf.EM_LOONGARCH || class != elf.ELFCLASS64 {
 			return errorf("elf object but not loong64")
 		}
@@ -965,7 +965,7 @@ func relSize(arch *sys.Arch, pn string, elftype uint32) (uint8, error) {
 		PPC64   = uint32(sys.PPC64)
 		RISCV64 = uint32(sys.RISCV64)
 		S390X   = uint32(sys.S390X)
-		LOONG64 = uint32(sys.LOONG64)
+		LOONG64 = uint32(sys.Loong64)
 	)
 
 	switch uint32(arch.Family) | elftype<<16 {

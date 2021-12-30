@@ -1,32 +1,6 @@
-// cmd/9c/9.out.h from Vita Nuova.
-//
-//	Copyright © 1994-1999 Lucent Technologies Inc.  All rights reserved.
-//	Portions Copyright © 1995-1997 C H Forsyth (forsyth@terzarima.net)
-//	Portions Copyright © 1997-1999 Vita Nuova Limited
-//	Portions Copyright © 2000-2008 Vita Nuova Holdings Limited (www.vitanuova.com)
-//	Portions Copyright © 2004,2006 Bruce Ellis
-//	Portions Copyright © 2005-2007 C H Forsyth (forsyth@terzarima.net)
-//	Revisions Copyright © 2000-2008 Lucent Technologies Inc. and others
-//	Portions Copyright © 2009 The Go Authors. All rights reserved.
-//	Portions Copyright © 2021 The Go Authors. All rights reserved.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright 2021 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 
 package loong64
 
@@ -36,23 +10,15 @@ import (
 
 //go:generate go run ../stringer.go -i $GOFILE -o anames.go -p loong64
 
-/*
- * loong64
- */
-
-/*
-TODO:MSA
-*/
 const (
 	NSNAME = 8
 	NSYM   = 50
-	NREG   = 32 /* number of general registers */
-	NFREG  = 32 /* number of floating point registers */
-//	NWREG  = 32 /* number of MSA registers */
+	NREG   = 32 // number of general registers
+	NFREG  = 32 // number of floating point registers
 )
 
 const (
-	REG_R0 = obj.RBaseLOONG64 + iota // must be a multiple of 32    //RBaseLOONG64  ggg
+	REG_R0 = obj.RBaseLOONG64 + iota // must be a multiple of 32
 	REG_R1
 	REG_R2
 	REG_R3
@@ -121,7 +87,7 @@ const (
 	REG_FCSR0 // must be a multiple of 32
 	REG_FCSR1
 	REG_FCSR2
-	REG_FCSR3 //Only four registers are needed
+	REG_FCSR3 // only four registers are needed
 	REG_FCSR4
 	REG_FCSR5
 	REG_FCSR6
@@ -158,7 +124,7 @@ const (
 	REG_FCC4
 	REG_FCC5
 	REG_FCC6
-	REG_FCC7 //Only eight registers are needed
+	REG_FCC7 // only eight registers are needed
 	REG_FCC8
 	REG_FCC9
 	REG_FCC10
@@ -184,99 +150,23 @@ const (
 	REG_FCC30
 	REG_FCC31
 
-	/*
-		// co-processor 0 control registers
-		REG_M0 // must be a multiple of 32
-		REG_M1
-		REG_M2
-		REG_M3
-		REG_M4
-		REG_M5
-		REG_M6
-		REG_M7
-		REG_M8
-		REG_M9
-		REG_M10
-		REG_M11
-		REG_M12
-		REG_M13
-		REG_M14
-		REG_M15
-		REG_M16
-		REG_M17
-		REG_M18
-		REG_M19
-		REG_M20
-		REG_M21
-		REG_M22
-		REG_M23
-		REG_M24
-		REG_M25
-		REG_M26
-		REG_M27
-		REG_M28
-		REG_M29
-		REG_M30
-		REG_M31
-
-		// MSA registers
-		// The lower bits of W registers are alias to F registers
-		REG_W0 // must be a multiple of 32
-		REG_W1
-		REG_W2
-		REG_W3
-		REG_W4
-		REG_W5
-		REG_W6
-		REG_W7
-		REG_W8
-		REG_W9
-		REG_W10
-		REG_W11
-		REG_W12
-		REG_W13
-		REG_W14
-		REG_W15
-		REG_W16
-		REG_W17
-		REG_W18
-		REG_W19
-		REG_W20
-		REG_W21
-		REG_W22
-		REG_W23
-		REG_W24
-		REG_W25
-		REG_W26
-		REG_W27
-		REG_W28
-		REG_W29
-		REG_W30
-		REG_W31
-
-		REG_HI
-		REG_LO
-	*/
 	REG_LAST = REG_FCC31 // the last defined register
 
 	REG_SPECIAL = REG_FCSR0
 
-	REGZERO = REG_R0 /* set to zero */
-	REGSP   = REG_R3
+	REGZERO = REG_R0 // set to zero
 	REGLINK = REG_R1
-	REGRET  = REG_R19 //FIXME:use t7 for now
-	REGARG  = -1      /* -1 disables passing the first argument in register */
-	REGRT1  = REG_R19 /* reserved for runtime, duffzero and duffcopy */
-	REGRT2  = REG_R4  /* reserved for runtime, duffcopy */
-	REGCTXT = REG_R29 /* context for closures */
-	REGG    = REG_R22 /* G */ //FP in loong64
-	REGTMP  = REG_R30 /* used by the linker */
+	REGSP   = REG_R3
+	REGRET  = REG_R19
+	REGARG  = -1      // -1 disables passing the first argument in register
+	REGRT1  = REG_R19 // reserved for runtime, duffzero and duffcopy
+	REGRT2  = REG_R20 // reserved for runtime, duffcopy
+	REGCTXT = REG_R29 // context for closures
+	REGG    = REG_R22 // G in loong64
+	REGTMP  = REG_R30 // used by the assembler
 	FREGRET = REG_F0
 )
 
-// https://llvm.org/svn/llvm-project/llvm/trunk/lib/Target/LOONG64/LOONG64RegisterInfo.td search for DwarfRegNum
-// https://gcc.gnu.org/viewcvs/gcc/trunk/gcc/config/loong64/loong64.c?view=co&revision=258099&content-type=text%2Fplain search for loong64_dwarf_regno
-// For now, this is adequate for both 32 and 64 bit.
 var LOONG64DWARFRegisters = map[int16]int16{}
 
 func init() {
@@ -287,12 +177,8 @@ func init() {
 		}
 	}
 	f(REG_R0, REG_R31, 0)
-	f(REG_F0, REG_F31, 32) // For 32-bit LOONG64, compiler only uses even numbered registers --  see cmd/compile/internal/ssa/gen/LOONG64Ops.go
+	f(REG_F0, REG_F31, 32)
 
-	/*TODO:MSA
-	// The lower bits of W registers are alias to F registers
-	f(REG_W0, REG_W31, 32)
-	*/
 }
 
 const (
@@ -300,17 +186,11 @@ const (
 )
 
 const (
-	/* mark flags */
-	FOLL    = 1 << 0
-	LABEL   = 1 << 1
-	LEAF    = 1 << 2
-	SYNC    = 1 << 3
-	BRANCH  = 1 << 4
-	LOAD    = 1 << 5
-	FCMP    = 1 << 6
-	NOSCHED = 1 << 7
-
-	NSCHED = 20
+	// mark flags
+	LABEL  = 1 << 0
+	LEAF   = 1 << 1
+	SYNC   = 1 << 2
+	BRANCH = 1 << 3
 )
 
 const (
@@ -320,20 +200,20 @@ const (
 	C_FCSRREG
 	C_FCCREG
 	C_ZCON
-	C_SCON /* 12 bit signed */
-	C_UCON /* 32 bit signed, low 12 bits 0 */
+	C_SCON // 12 bit signed
+	C_UCON // 32 bit signed, low 12 bits 0
 	C_ADD0CON
 	C_AND0CON
-	C_ADDCON /* -0x800 <= v < 0 */
-	C_ANDCON /* 0 < v <= 0xFFF */
-	C_LCON   /* other 32 */
-	C_DCON   /* other 64 (could subdivide further) */
-	C_SACON  /* $n(REG) where n <= int12 */
+	C_ADDCON // -0x800 <= v < 0
+	C_ANDCON // 0 < v <= 0xFFF
+	C_LCON   // other 32
+	C_DCON   // other 64 (could subdivide further)
+	C_SACON  // $n(REG) where n <= int12
 	C_SECON
-	C_LACON /* $n(REG) where int12 < n <= int32 */
+	C_LACON // $n(REG) where int12 < n <= int32
 	C_LECON
-	C_DACON /* $n(REG) where int32 < n */
-	C_STCON /* $tlsvar */
+	C_DACON // $n(REG) where int32 < n
+	C_STCON // $tlsvar
 	C_SBRA
 	C_LBRA
 	C_SAUTO
@@ -348,13 +228,12 @@ const (
 	C_TLS
 	C_TEXTSIZE
 
-	C_NCLASS /* must be the last */
+	C_NCLASS // must be the last
 )
 
 const (
 	AABSD = obj.ABaseLOONG64 + obj.A_ARCHSPECIFIC + iota
 	AABSF
-	//AABSW //not used
 	AADD
 	AADDD
 	AADDF
@@ -370,36 +249,26 @@ const (
 	ABFPF
 	ABFPT
 
-	//ABLTZAL   //Function repetition in loong64
-
 	ABNE
 	ABREAK
 	ACLO
 	ACLZ
 
-	//not support in loong64
-	//ACMOVF
-	//ACMOVN
-	//ACMOVT
-	//ACMOVZ
-
 	ACMPEQD
 	ACMPEQF
 
-	ACMPGED //ACMPGED -> fcmp.sle.d
-	ACMPGEF //ACMPGEF -> fcmp.sle.s
-	ACMPGTD //ACMPGTD -> fcmp.slt.d
-	ACMPGTF //ACMPGTF -> fcmp.slt.s
+	ACMPGED // ACMPGED -> fcmp.sle.d
+	ACMPGEF // ACMPGEF -> fcmp.sle.s
+	ACMPGTD // ACMPGTD -> fcmp.slt.d
+	ACMPGTF // ACMPGTF -> fcmp.slt.s
 
-	//add in loong64
 	ALU12IW
 	ALU32ID
 	ALU52ID
 	APCADDU12I
-	//ABL
 	AJIRL
-	ABGE //MIPS:BLEZ/BGEZ -> LA:BGE
-	ABLT //MIPS:BLTZ/BGTZ -> LA:BLT
+	ABGE
+	ABLT
 	ABLTU
 	ABGEU
 
@@ -409,16 +278,11 @@ const (
 	ADIVU
 	ADIVW
 
-	AGOK //not used
 	ALL
 	ALLV
 
-	//Need to convert
 	ALUI
 
-	//AMADD //not support in loong64
-
-	//Need to convert in func buildop
 	AMOVB
 	AMOVBU
 
@@ -429,7 +293,6 @@ const (
 	AMOVFD
 	AMOVFW
 
-	//Need to convert
 	AMOVH
 	AMOVHU
 	AMOVW
@@ -437,11 +300,8 @@ const (
 	AMOVWD
 	AMOVWF
 
-	//Need to convert
 	AMOVWL
-	AMOVWR //SWR in mips
-
-	//AMSUB  //not support in loong64
+	AMOVWR
 
 	AMUL
 	AMULD
@@ -453,7 +313,6 @@ const (
 	ANEGD
 	ANEGF
 
-	//Need to convert
 	ANEGW
 	ANEGV
 
@@ -463,7 +322,7 @@ const (
 	AREM
 	AREMU
 
-	ARFE //not used
+	ARFE
 
 	ASC
 	ASCV
@@ -482,23 +341,17 @@ const (
 
 	ASUBU
 	ASUBW
-	ASYNC
+	ADBAR
 	ASYSCALL
 
 	ATEQ
 	ATNE
 
-	//not used
-	ATLBP
-	ATLBR
-	ATLBWI
-	ATLBWR
 	AWORD
 
 	AXOR
 
-	/* 64-bit */
-	//Need to convert
+	// 64-bit
 	AMOVV
 	AMOVVL
 	AMOVVR
@@ -521,7 +374,7 @@ const (
 	ASUBV
 	ASUBVU
 
-	/* 64-bit FP */
+	// 64-bit FP
 	ATRUNCFV
 	ATRUNCDV
 	ATRUNCFW
@@ -532,12 +385,6 @@ const (
 	AMOVDV
 	AMOVVF
 	AMOVVD
-
-	/* MSA */
-	//AVMOVB
-	//AVMOVH
-	//AVMOVW
-	//AVMOVD
 
 	ALAST
 
@@ -559,14 +406,9 @@ func init() {
 		panic("REG_F0 is not a multiple of 32")
 	}
 	if REG_FCSR0%32 != 0 {
-		panic("REG_M0 is not a multiple of 32")
+		panic("REG_FCSR0 is not a multiple of 32")
 	}
 	if REG_FCC0%32 != 0 {
-		panic("REG_FCR0 is not a multiple of 32")
+		panic("REG_FCC0 is not a multiple of 32")
 	}
-	/*TODO:MSA
-	if REG_W0%32 != 0 {
-		panic("REG_W0 is not a multiple of 32")
-	}
-	*/
 }

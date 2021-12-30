@@ -57,7 +57,7 @@ func RelocName(arch *sys.Arch, r objabi.RelocType) string {
 			return elf.R_ARM(nr).String()
 		case sys.ARM64:
 			return elf.R_AARCH64(nr).String()
-		case sys.LOONG64:
+		case sys.Loong64:
 			return elf.R_LARCH(nr).String()
 		case sys.I386:
 			return elf.R_386(nr).String()

@@ -521,13 +521,13 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		case ssa.OpLOONG64LoweredAtomicLoad32:
 			as = loong64.AMOVW
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(as)
 		p.From.Type = obj.TYPE_MEM
 		p.From.Reg = v.Args[0].Reg()
 		p.To.Type = obj.TYPE_REG
 		p.To.Reg = v.Reg0()
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 	case ssa.OpLOONG64LoweredAtomicStore8, ssa.OpLOONG64LoweredAtomicStore32, ssa.OpLOONG64LoweredAtomicStore64:
 		as := loong64.AMOVV
 		switch v.Op {
@@ -536,25 +536,25 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		case ssa.OpLOONG64LoweredAtomicStore32:
 			as = loong64.AMOVW
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(as)
 		p.From.Type = obj.TYPE_REG
 		p.From.Reg = v.Args[1].Reg()
 		p.To.Type = obj.TYPE_MEM
 		p.To.Reg = v.Args[0].Reg()
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 	case ssa.OpLOONG64LoweredAtomicStorezero32, ssa.OpLOONG64LoweredAtomicStorezero64:
 		as := loong64.AMOVV
 		if v.Op == ssa.OpLOONG64LoweredAtomicStorezero32 {
 			as = loong64.AMOVW
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(as)
 		p.From.Type = obj.TYPE_REG
 		p.From.Reg = loong64.REGZERO
 		p.To.Type = obj.TYPE_MEM
 		p.To.Reg = v.Args[0].Reg()
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 	case ssa.OpLOONG64LoweredAtomicExchange32, ssa.OpLOONG64LoweredAtomicExchange64:
 		// SYNC
 		// MOVV	Rarg1, Rtmp
@@ -568,7 +568,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 			ll = loong64.ALL
 			sc = loong64.ASC
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(loong64.AMOVV)
 		p.From.Type = obj.TYPE_REG
 		p.From.Reg = v.Args[1].Reg()
@@ -589,7 +589,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		p3.From.Reg = loong64.REGTMP
 		p3.To.Type = obj.TYPE_BRANCH
 		gc.Patch(p3, p)
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 	case ssa.OpLOONG64LoweredAtomicAdd32, ssa.OpLOONG64LoweredAtomicAdd64:
 		// SYNC
 		// LL	(Rarg0), Rout
@@ -604,7 +604,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 			ll = loong64.ALL
 			sc = loong64.ASC
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(ll)
 		p.From.Type = obj.TYPE_MEM
 		p.From.Reg = v.Args[0].Reg()
@@ -626,7 +626,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		p3.From.Reg = loong64.REGTMP
 		p3.To.Type = obj.TYPE_BRANCH
 		gc.Patch(p3, p)
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p4 := s.Prog(loong64.AADDVU)
 		p4.From.Type = obj.TYPE_REG
 		p4.From.Reg = v.Args[1].Reg()
@@ -647,7 +647,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 			ll = loong64.ALL
 			sc = loong64.ASC
 		}
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p := s.Prog(ll)
 		p.From.Type = obj.TYPE_MEM
 		p.From.Reg = v.Args[0].Reg()
@@ -669,7 +669,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		p3.From.Reg = loong64.REGTMP
 		p3.To.Type = obj.TYPE_BRANCH
 		gc.Patch(p3, p)
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p4 := s.Prog(loong64.AADDVU)
 		p4.From.Type = obj.TYPE_CONST
 		p4.From.Offset = v.AuxInt
@@ -696,7 +696,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		p.From.Reg = loong64.REGZERO
 		p.To.Type = obj.TYPE_REG
 		p.To.Reg = v.Reg0()
-		s.Prog(loong64.ASYNC)
+		s.Prog(loong64.ADBAR)
 		p1 := s.Prog(ll)
 		p1.From.Type = obj.TYPE_MEM
 		p1.From.Reg = v.Args[0].Reg()
@@ -722,7 +722,7 @@ func ssaGenValue(s *gc.SSAGenState, v *ssa.Value) {
 		p5.From.Reg = v.Reg0()
 		p5.To.Type = obj.TYPE_BRANCH
 		gc.Patch(p5, p1)
-		p6 := s.Prog(loong64.ASYNC)
+		p6 := s.Prog(loong64.ADBAR)
 		gc.Patch(p2, p6)
 	case ssa.OpLOONG64LoweredNilCheck:
 		// Issue a load which will fault if arg is nil.

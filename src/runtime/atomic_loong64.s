@@ -7,8 +7,8 @@
 #include "textflag.h"
 
 // DBAR sync load/store operation
-#define SYNC	WORD $0x38720000
+#define DBAR	WORD $0x38720000
 
 TEXT ·publicationBarrier(SB),NOSPLIT|NOFRAME,$0-0
-	SYNC
+	DBAR
 	RET
