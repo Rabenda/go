@@ -125,6 +125,8 @@ func main() {
 			if elfIsLittleEndian(os.Args[0]) {
 				gohostarch = "mipsle"
 			}
+		case strings.Contains(out, "loongarch64"):
+			gohostarch = "loong64"
 		case strings.Contains(out, "riscv64"):
 			gohostarch = "riscv64"
 		case strings.Contains(out, "s390x"):
@@ -142,7 +144,7 @@ func main() {
 		}
 	}
 
-	if gohostarch == "arm" || gohostarch == "mips64" || gohostarch == "mips64le" {
+	if gohostarch == "arm" || gohostarch == "mips64" || gohostarch == "mips64le" || gohostarch == "loong64" {
 		maxbg = min(maxbg, runtime.NumCPU())
 	}
 	bginit()

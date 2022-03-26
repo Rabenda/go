@@ -15,7 +15,7 @@ package cgotest
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _AIX
+#if defined(_AIX) || defined(__loongarch64)
 // On AIX, SIGSTKSZ is too small to handle Go sighandler.
 #define CSIGSTKSZ 0x4000
 #else

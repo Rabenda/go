@@ -14,7 +14,7 @@
 
 #include "libgo4.h"
 
-#ifdef _AIX
+#if defined(_AIX) || defined(__loongarch64)
 // On AIX, CSIGSTKSZ is too small to handle Go sighandler.
 #define CSIGSTKSZ 0x4000
 #else

@@ -433,6 +433,14 @@ func (p *Parser) asmJump(op obj.As, cond string, a []obj.Addr) {
 			prog.Reg = p.getRegister(prog, op, &a[1])
 			break
 		}
+		if p.arch.Family == sys.Loong64 {
+			// 3-operand jumps.
+			// First two must be registers
+			target = &a[2]
+			prog.From = a[0]
+			prog.Reg = p.getRegister(prog, op, &a[1])
+			break
+		}
 		if p.arch.Family == sys.S390X {
 			// 3-operand jumps.
 			target = &a[2]
@@ -593,12 +601,22 @@ func (p *Parser) asmInstruction(op obj.As, cond string, a []obj.Addr) {
 				prog.Reg = p.getRegister(prog, op, &a[1])
 				break
 			}
+		} else if p.arch.Family == sys.Loong64 {
+			if arch.IsLOONG64CMP(op) {
+				prog.From = a[0]
+				prog.Reg = p.getRegister(prog, op, &a[1])
+				break
+			}
 		}
 		prog.From = a[0]
 		prog.To = a[1]
 	case 3:
 		switch p.arch.Family {
 		case sys.MIPS, sys.MIPS64:
+			prog.From = a[0]
+			prog.Reg = p.getRegister(prog, op, &a[1])
+			prog.To = a[2]
+		case sys.Loong64:
 			prog.From = a[0]
 			prog.Reg = p.getRegister(prog, op, &a[1])
 			prog.To = a[2]

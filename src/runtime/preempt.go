@@ -386,7 +386,7 @@ func isAsyncSafePoint(gp *g, pc, sp, lr uintptr) (bool, uintptr) {
 		// Not Go code.
 		return false, 0
 	}
-	if (GOARCH == "mips" || GOARCH == "mipsle" || GOARCH == "mips64" || GOARCH == "mips64le") && lr == pc+8 && funcspdelta(f, pc, nil) == 0 {
+	if (GOARCH == "loong64" || GOARCH == "mips" || GOARCH == "mipsle" || GOARCH == "mips64" || GOARCH == "mips64le") && lr == pc+8 && funcspdelta(f, pc, nil) == 0 {
 		// We probably stopped at a half-executed CALL instruction,
 		// where the LR is updated but the PC has not. If we preempt
 		// here we'll see a seemingly self-recursive call, which is in

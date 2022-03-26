@@ -18,6 +18,7 @@ const (
 	ARM
 	ARM64
 	I386
+	LOONG64
 	MIPS
 	MIPS64
 	PPC64

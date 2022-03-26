@@ -1613,6 +1613,8 @@ func (p *Package) gccMachine() []string {
 		} else if gomips == "softfloat" {
 			return []string{"-mabi=32", "-msoft-float"}
 		}
+	case "loong64":
+		return []string{"-mabi=lp64"}
 	}
 	return nil
 }
